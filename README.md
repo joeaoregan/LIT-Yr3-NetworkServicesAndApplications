@@ -4,7 +4,7 @@
 alt="Network Services and Applications - CA - Sockets in C" width="426" height="500" border="10" />
 
 <img src="https://lh3.googleusercontent.com/pGeiOgG72UsRwmGhT0V3loiC_Axi65wY8XZTufJxfjVAxUXEe8HaMLGZI600rELrOUwp6UGCUlNR3Qvh8iARBs-nmHQt5ezVmufKBY5IZnQpn_Gp1HQfClmPHw37NtcobEJxHb3leenHXqd5NhGXwZzOdWO5qxyb4CW1eiwV5Xk8HkAmTyN_vZyxnMAEwZ3KDnVnfDCbQa3OkYAb1jtSSABb22ozp98cSLMk59JEldzUOGsiRA-mw5r8_Gcm73igrM1ODn-maejPGEQeBqukUv56VVUOUT0rqHuBlxtm6dMRD7uDwp6E0wIDh0uVegfHXalqXMMX2MBR0mHJAmt1ZtGfGOVs-_SguXPC0BPoJkI_fnCLjfv9GPgX-C9mX-M1l-b6LTwwGFVlnJk627zBlU3AdxFT47JVhlbpSV6-P4LFMFNqQEFURA0mpUEgCPaCWTSfbFNlauBrg6BGx1LqGb5-6_2BxZO-MkKegF_BoS32lOzpCldjgQFO-ihI7-0vnMtXig5Mm3WC2ucwRxZxU3aDEt9Zv37zWgMwkEG-E_Vq0nNnzxbLW5w6_zDV8N0nGbVaCJ3wHU748deujwhwj9G49vK3abnjg0X_McK7E1Np5lEJDpo=w687-h285-no" 
-alt="Network Services and Applications - CA - Sockets in C" width="426" height="500" border="10" />
+alt="Network Services and Applications - CA - Sockets in C" width="426" height="177" border="10" />
 
 Take Home Assignment for 3rd year Netork Services and Applications module of 
 Games Design & Development - BSc (Honours) in Computing (Level 8) course. 
