@@ -32,8 +32,7 @@ int main(int argc, char *argv[]) {													//run on command line = "echoSvr 
 	char buffer[BUFSIZE]; 															// Buffer
 	char outcome[40];																// Send the outcome, OK / Error
 	int servSock; 																	// Socket descriptor for server, handles incoming connections
-	ssize_t numBytesSent;															// Number of bytes sent to client
-	ssize_t numBytesRcvd;															// Number of bytes received from client
+	ssize_t numBytesSent, numBytesRcvd;												// Number of bytes sent to client, and received from client
 	time_t t;																		// For random number generation
  
 	if (argc < 1 || argc > 2) {
@@ -43,7 +42,7 @@ int main(int argc, char *argv[]) {													//run on command line = "echoSvr 
 	in_port_t servPort = (argc == 2) ? atoi(argv[1]) : TCP_PORT;					// Use default port if none entered
 
 	if ((servSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {				// Create socket
-    	DieWithSystemMessage("socket() failed");
+		DieWithSystemMessage("socket() failed");
 	}
 
 	// Construct local address structure
@@ -65,8 +64,9 @@ int main(int argc, char *argv[]) {													//run on command line = "echoSvr 
 	printf("listening on %s:%d\n", inet_ntoa(servAddr.sin_addr), servPort);
   
 	if (listen(servSock, MAXPENDING) < 0) {											// Socket listens for incoming connections
-    	DieWithSystemMessage("listen() failed");
+		DieWithSystemMessage("listen() failed");
 	}
+	
 	/* LOOP */
 
 	for (;;) { 																		// Infinite loop
@@ -76,17 +76,17 @@ int main(int argc, char *argv[]) {													//run on command line = "echoSvr 
 	
 	    // Wait for a client to connect
 	    int clntSock = accept(servSock, (struct sockaddr *) &clntAddr, &clntAddrLen);
-	    if (clntSock < 0) {
-	    	DieWithSystemMessage("accept() failed");
+		if (clntSock < 0) {
+			DieWithSystemMessage("accept() failed");
 		}
 	
 	    // clntSock is connected to a client!
 	    char clntName[INET_ADDRSTRLEN]; 											// String to contain client address
-	    if (inet_ntop(AF_INET, &clntAddr.sin_addr.s_addr, clntName, sizeof(clntName)) != NULL) {
+		if (inet_ntop(AF_INET, &clntAddr.sin_addr.s_addr, clntName, sizeof(clntName)) != NULL) {
 			printf("NEW CONNECTION\n\n");
-	    	printf("Connected to: %s-%d, \n", clntName, ntohs(clntAddr.sin_port));	// client address / port
+			printf("Connected to: %s-%d, \n", clntName, ntohs(clntAddr.sin_port));	// client address / port
 	    } else {
-	    	puts("Unable to get client address");
+			puts("Unable to get client address");
 		}
 	
 		/* RECEIVE - Request String & Parse It */
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {													//run on command line = "echoSvr 
 			printf("IP Address:\t%s\n", clntName);
 			printf("Port:\t\t%s\n\n", port);
 
-		  sprintf(greeting, "Hello %s-%d, welcome to the netsvr server\r\n", clntName, ntohs(clntAddr.sin_port)); 	// client address / port
+			sprintf(greeting, "Hello %s-%d, welcome to the netsvr server\r\n", clntName, ntohs(clntAddr.sin_port)); 	// client address / port
 		} else {
 			printf("Request string incorrectly formatted\n");
 			
@@ -149,15 +149,16 @@ int main(int argc, char *argv[]) {													//run on command line = "echoSvr 
 		
 		// SEND - Greeting
 		numBytesSent = send(clntSock, greeting, strlen(greeting), 0);		// Send the greeting
-		if(isspace(greeting[0])) {											// Check for space at beginning of a line
+		if (isspace(greeting[0])) {											// Check for space at beginning of a line
 			DieWithSystemMessage("Syntax error");
 		}
 		//if (strncmp(greeting, " ", 1) == 0)								// Old version, check for space
 		//  DieWithSystemMessage("Syntax error");
-		else if (numBytesSent < 0)
+		else if (numBytesSent < 0) {
 			DieWithSystemMessage("send() failed");
-		else if (numBytesSent != strlen(greeting))
+		} else if (numBytesSent != strlen(greeting)) {
 			DieWithUserMessage("send()", "sent unexpected number of bytes");
+		}
 	
 		// CONDITIONAL
 		if(proceed == 0) {													// Continue if the greeting is positive
@@ -178,7 +179,7 @@ int main(int argc, char *argv[]) {													//run on command line = "echoSvr 
 			strcat(message2,"\r\n");										// Ad end-of-line terminator
 
 			numBytesSent = send(clntSock, message2, strlen(message2), 0);
-			if(isspace(message2[0])) {										// Check 1st character for whitespace
+			if (isspace(message2[0])) {										// Check 1st character for whitespace
 				DieWithSystemMessage("Syntax error");
 			}
 
