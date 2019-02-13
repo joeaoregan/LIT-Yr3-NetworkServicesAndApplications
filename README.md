@@ -1,6 +1,8 @@
-# BSc Computing (Game Design and Development)
+# Network Services and Applications
 ## Joe O'Regan (K00203642)
-
+### Year 3 (2016/17), Semester 5
+### BSc Computing (Game Design and Development)
+#### Limerick Institute of Technology
 ---
 
 ## Network-Services-Applications-CA
@@ -24,7 +26,6 @@ generated cookie is also sent.
 ---
 
 ## Screenshots
-
 
 ![Client](https://raw.githubusercontent.com/joeaoregan/LIT-Yr3-NetworkServicesAndApplications-CA-C-Sockets/master/Screenshots/20161124-Client.png "Client")
 ###### Client
