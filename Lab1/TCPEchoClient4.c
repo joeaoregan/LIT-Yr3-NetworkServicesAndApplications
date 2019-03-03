@@ -30,8 +30,8 @@ int main(int argc, char *argv[]) {		// Pass arguments from the command line when
   // socket() = function to create a socket
   // AF_INET: Socket is for IPv4, SOCK_STREAM: Using stream-based protocol, IPPROTO_TCP: TCP protocol
   int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);	// IPv4, stream based protocol called TCP
-  if (sock < 0)											// -1 returned if socket is unsucessful
-    DieWithSystemMessage("socket() failed");			// Error function outputs message
+  if (sock < 0)						// -1 returned if socket is unsucessful
+    DieWithSystemMessage("socket() failed");		// Error function outputs message
 
 
   /* Preparing Addressing Details And Establishing The Connection With The Server */
@@ -61,38 +61,46 @@ int main(int argc, char *argv[]) {		// Pass arguments from the command line when
 
   // Send the string to the server, up to the length of echoStringLen
   ssize_t numBytes = send(sock, echoString, echoStringLen, 0);	// returns number of bytes copied into buffer
-  if (numBytes < 0)							// String did not send, -1 returned in case of failure
+  if (numBytes < 0)						// String did not send, -1 returned in case of failure
     DieWithSystemMessage("send() failed");
-  else if (numBytes != echoStringLen)		// Wrong number of bytes sent
+  else if (numBytes != echoStringLen)				// Wrong number of bytes sent
     DieWithUserMessage("send()", "sent unexpected number of bytes");
+  
+
+  // Display Server address message
+  char serverName[INET_ADDRSTRLEN]; 				// String to contain server address
+  if (inet_ntop(AF_INET, &servAddr.sin_addr.s_addr, serverName,
+        sizeof(serverName)) != NULL)
+  printf("Connecting To Server %s/%d\n", serverName, ntohs(servAddr.sin_port));
+  printf("Sending Echo Word: \"%s", echoString);   
     
-    
+
   /*  Receiving Data */
 
   // Receive the same string back from the server
   unsigned int totalBytesRcvd = 0; 		// Count of total bytes received
-  fputs("Received: ", stdout);     		// Setup to print the echoed string
+  fputs("\"\nReceived: ", stdout);     	// Setup to print the echoed string
   // Need to repeatedly receive bytes, until we receive as many as we sent
   while (totalBytesRcvd < echoStringLen) {
     char buffer[BUFSIZE]; // I/O buffer
     /* Receive up to the buffer size (minus 1 to leave space for
      a null terminator) bytes from the sender */
     numBytes = recv(sock, buffer, BUFSIZE - 1, 0);
-    if (numBytes < 0)					// -1 returned for failure
+    if (numBytes < 0)				// -1 returned for failure
       DieWithSystemMessage("recv() failed");
-    else if (numBytes == 0)				// Return 0 if app at other end closed the TCP connection
+    else if (numBytes == 0)			// Return 0 if app at other end closed the TCP connection
       DieWithUserMessage("recv()", "connection closed prematurely");
-    totalBytesRcvd += numBytes; 		// Keep tally of total bytes received
-    buffer[numBytes] = '\0';    		// Terminate the string! Add terminating null character
-    fputs(buffer, stdout);      		// Print the echo buffer to standard output
+    totalBytesRcvd += numBytes; 	// Keep tally of total bytes received
+    buffer[numBytes] = '\0';    	// Terminate the string! Add terminating null character
+    fputs(buffer, stdout);      	// Print the echo buffer to standard output
   }
 
-  fputc('\n', stdout); 					// Print a final linefeed
+  fputc('\n', stdout); 				// Print a final linefeed
 
 
   /* Terminating Connection And Exiting Cleanly */
   
-  close(sock);		// Inform the remote socket communication has ended
-  					// and deallocate local resources
-  exit(0);			// Terminate the application
+  close(sock);						// Inform the remote socket communication has ended
+  									// and deallocate local resources
+  exit(0);							// Terminate the application
 }

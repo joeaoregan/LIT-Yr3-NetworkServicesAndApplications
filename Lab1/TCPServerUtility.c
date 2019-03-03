@@ -72,8 +72,22 @@ int AcceptTCPConnection(int servSock) {
   return clntSock;
 }
 
-void HandleTCPClient(int clntSocket) {
+
+//void HandleTCPClient(int clntSocket) {
+void HandleTCPClient(int clntSocket, char* servIP, char* port) {
   char buffer[BUFSIZE]; // Buffer for echo string
+
+  // Send IP Address and Port to Client
+  printf("\nHandleTCPClient():");
+  printf("\nServer IP Address: %s", servIP);
+  printf("\nServer Port Number: %s", port);
+  printf("\n");
+
+  char portStr[100] = "\nFrom Server listening on IP Address: ";  
+  strcat(portStr,servIP);
+  strcat(portStr," and port: ");
+  strcat(portStr,port);  
+  int portSize = sizeof(portStr);
 
   // Receive message from client
   ssize_t numBytesRcvd = recv(clntSocket, buffer, BUFSIZE, 0);
@@ -84,6 +98,11 @@ void HandleTCPClient(int clntSocket) {
   while (numBytesRcvd > 0) { // 0 indicates end of stream
     // Echo message back to client
     ssize_t numBytesSent = send(clntSocket, buffer, numBytesRcvd, 0);
+
+    // Send ip address  
+    send(clntSocket, portStr, portSize, 0);
+
+
     if (numBytesSent < 0)
       DieWithSystemMessage("send() failed");
     else if (numBytesSent != numBytesRcvd)
